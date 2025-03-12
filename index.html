@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="shortcut icon" href="assets/ph-tube.jpg" type="image/x-icon">
+    <title>PH-TUBE</title>
+    <style>
+        .active{
+            background: #FF1F3D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="w-11/12 mx-auto flex justify-between items-center border-b-2 border-gray-200 py-5">
+            <div class="logo"><img class="w-[120px]" src="assets/Logo.png" alt=""></div>
+            <div class="sort"><button class="btn font-medium bg-[#25252533] rounded-md">Sort by view</button></div>
+            <div class="sort"><button class="btn text-white font-semibold bg-[#FF1F3D] rounded-md">Blogs</button></div>
+        </nav>
+    </header>
+
+    <nav id="category-container" class="flex justify-center gap-5 py-5">
+        <div><button id="btn-all" class="btn btn-sm" onclick="loadVideos()">All</button></div>
+    </nav>
+
+    <section id="video-container" class="w-11/12 mx-auto grid grid-cols-4 gap-5 my-5">
+
+<!-- col-span-full deya holo cz ei section ta k grid giye 4 cols e bhaag kora hoichilo. jar karone img ta oi borabor jaiga nichilo. eita fix korar jonno flex then baki css property gulu o use kora hoise. r eta ready kor hoise default vabe show koranor jonno.  -->
+        <div class="col-span-full flex flex-col justify-center items-center text-center py-20">
+            <img src="assets/Icon.png" alt="">
+            <h2 class="text-2xl font-bold py-5">Oops!! Sorry, There is no <br> content here</h2>
+        </div>
+    </section>
+    <script src="ph.js"></script>
+</body>
+</html>
