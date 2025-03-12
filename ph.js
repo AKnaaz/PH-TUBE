@@ -18,8 +18,9 @@ function displayCategory(data) {
 
 loadCategories();
 
-function loadVideos() {
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function loadVideos(searchText = "") {
+    showLoader();
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then(response => response.json())
     .then((data) => {
         removeActiveClass();
@@ -41,6 +42,7 @@ const displayVideos = (videos) => {
             <h2 class="text-2xl font-bold py-5">Oops!! Sorry, There is no <br> content here</h2>
         </div>
         `
+        hideLoader();
         return;
     }
 // forEach loop use kora hoise abr callback function o niche er betore.
@@ -64,18 +66,24 @@ const displayVideos = (videos) => {
                 </div>
                 <div class="intro">
                     <p class="text-base font-bold">${video.title}</p>
-                    <h2 class="text-sm font-semibold text-gray-400 flex gap-1">${video.authors[0].profile_name}<img class="w-4 h-4" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt=""></h2>
+                    <h2 class="text-sm font-semibold text-gray-400 flex items-center gap-1">${video.authors[0].profile_name}
+                    ${video.authors[0].verified == true ?
+                         `<img class="w-4 h-4" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt="">`
+                          : ` `}
+                          </h2>
                     <p class="text-sm font-semibold text-gray-400">${video.others.views}</p>
                 </div>
             </div>
-            <button onclick="loadVideoDetails(${video.video_id})" class="btn btn-block">Show details</button>
+            <button onclick=loadVideoDetails('${video.video_id}') class="btn btn-block">Show details</button>
         </div>
         `
         videoContainer.appendChild(videoCard);
     });
+    hideLoader();
 }
 
 const loadCategoryVideos = (id) => {
+    showLoader();
     const url =`https://openapi.programming-hero.com/api/phero-tube/category/${id}`
     console.log(url)
 
@@ -93,4 +101,51 @@ function removeActiveClass() {
     for(let btn of activeButtons){
         btn.classList.remove("active");
     }
+}
+
+const loadVideoDetails = (videoId) => {
+    console.log(videoId)
+    const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayVideoDetails(data.video))
+}
+
+const displayVideoDetails = (video) => {
+    document.getElementById("video_details").showModal();
+    const detailsContainer = document.getElementById("details-container");
+
+    detailsContainer.innerHTML =`
+    <div class="card bg-base-100 image-full shadow-sm">
+        <figure>
+            <img
+            src="${video.thumbnail}"
+            alt="" />
+        </figure>
+        <div class="card-body">
+            <h2 class="card-title text-white">${video.title}</h2>
+            <h2 class="flex items-center gap-1">${video.authors[0].profile_name}
+                    ${video.authors[0].verified == true ?
+                         `<img class="w-4 h-4" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt="">`
+                          : ` `}
+                          </h2>
+            <p>${video.others.views}</p>   
+        </div>
+    </div>
+    `
+} 
+
+document.getElementById("search-input").addEventListener("keyup", (e) => {
+    const input = e.target.value;
+    loadVideos(input);
+})
+
+const showLoader = () => {
+    document.getElementById("loader").classList.remove("hidden");
+    document.getElementById("video-container").classList.add("hidden");
+}
+
+const hideLoader = () => {
+    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("video-container").classList.remove("hidden");
 }
